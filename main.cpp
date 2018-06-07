@@ -1,8 +1,7 @@
-#include <QCoreApplication>
-
+#include "namegenerator.h"
 int main(int argc, char *argv[])
 {
-    QCoreApplication a(argc, argv);
-
-    return a.exec();
+    NameGenerator n;
+    string s = n.GenerateName("Horvath, Tamas");
+    return 0;
 }
