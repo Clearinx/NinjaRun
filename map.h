@@ -12,6 +12,7 @@ public:
     void setMap(int height, int width, char c);
     Point GetStart();
     char GetElement(int x, int y);
+    Point GetPathwayEndLocation(Point actualPosition, char toFind);
 };
 
 #endif // MAP_H

@@ -36,6 +36,7 @@ class Ninja
     void Win();
     void PickUpShuriken(Map *map);
     void LoopAlert(int i);
+    void SecretPathway(Map *map, char toFind);
 
 public:
     Ninja(Point startLocation);

@@ -55,6 +55,12 @@ void Ninja::CheckNextField(Map *map, char *c, Point *nextPosition)
 
 void Ninja::Act(Map *map, char *c, Point *nextPosition)
 {
+    if(c[0] >= 'F' && c[0] <= 'L')
+    {
+        MoveToNextPosition(nextPosition);
+        SecretPathway(map, c[0]);
+        return;
+    }
     switch (c[0]) {
     case ' ':
     {
@@ -331,4 +337,10 @@ void Ninja::LoopAlert(int i)
     {
         _loop = true;
     }
+}
+
+void Ninja::SecretPathway(Map *map, char toFind)
+{
+    Point newPosition = map->GetPathwayEndLocation(_actualPosition, toFind);
+    _actualPosition.setValues(newPosition.getX(), newPosition.getY());
 }
