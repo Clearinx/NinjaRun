@@ -20,11 +20,14 @@ SOURCES += \
     inputreader.cpp \
     gamecontroller.cpp \
     map.cpp \
-    point.cpp
+    point.cpp \
+    ninja.cpp
 
 HEADERS += \
     namegenerator.h \
     inputreader.h \
     gamecontroller.h \
     map.h \
-    point.h
+    point.h \
+    direction.h \
+    ninja.h
