@@ -37,6 +37,14 @@ void Ninja::GoForIt(Map *map)
             Act(map, &c, &nextPosition);
         }
     }
+    if(_loop)
+    {
+        _logger.LogLoop();
+    }
+    else
+    {
+        _logger.LogDirection(_previousDirections);
+    }
 }
 
 void Ninja::CheckNextField(Map *map, char *c, Point *nextPosition)
@@ -75,8 +83,22 @@ void Ninja::Act(Map *map, char *c, Point *nextPosition)
     }
     case '$':
     {
+        if(!_breakerMode)
+        {
+            SetPriority(&_direction);
+            ChangeDirection(map);
+        }
+        else
+        {
+            MoveToNextPosition(nextPosition);
+            Win();
+        }
+        break;
+    }
+    case '*':
+    {
         MoveToNextPosition(nextPosition);
-        //Win();
+        PickUpShuriken(map);
         break;
     }
     default:
@@ -108,7 +130,8 @@ void Ninja::ChangeDirection(Map *map)
         }
         else
         {
-            if(map->GetElement(p.getX(), p.getY()) != 'X' || (map->GetElement(p.getX(), p.getY()) == 'X' && _breakerMode))
+            char c = map->GetElement(p.getX(), p.getY());
+            if((c != 'X' && c != '$') || (_breakerMode))
             {
                 found = true;
             }
@@ -132,6 +155,8 @@ void Ninja::ChangeDirection(Map *map)
 void Ninja::MoveToNextPosition(Point *nextPosition)
 {
     _actualPosition.setValues(nextPosition->getX(), nextPosition->getY());
+    LogPosition();
+    LogDirection();
 }
 
 void Ninja::BreakWall(Map *map)
@@ -261,5 +286,49 @@ void Ninja::DestroyObstacles(Map *map, vector<Point> Obstacles)
         map->setMap(Obstacles[i].getX(), Obstacles[i].getY(), '*');
         _shurikens--;
         i++;
+    }
+}
+
+void Ninja::LogPosition()
+{
+    for(int i = static_cast<int>(_previousPositions.size() - 1); i >= 0 ; i--)
+    {
+        if(_previousPositions[i].getX() == _actualPosition.getX() && _previousPositions[i].getY() == _actualPosition.getY())
+        {
+            LoopAlert(i);
+        }
+    }
+    _previousPositions.push_back(_actualPosition);
+}
+
+void Ninja::LogDirection()
+{
+    _previousDirections.push_back(_direction);
+}
+
+void Ninja::Win()
+{
+    _won = true;
+}
+
+void Ninja::PickUpShuriken(Map *map)
+{
+    _shurikens++;
+    map->setMap(_actualPosition.getX(), _actualPosition.getY(), ' ');
+}
+
+void Ninja::LoopAlert(int i)
+{
+    int count = static_cast<int>(_previousPositions.size() - 1) - i;
+    int j = count;
+    i--;
+    while(i >= 0 && j >= 0 && (_previousPositions[i].getX() == _previousPositions[count + i + 1].getX()) && (_previousPositions[i].getY() == _previousPositions[count + i + 1].getY()))
+    {
+        j--;
+        i--;
+    }
+    if(j == 0)
+    {
+        _loop = true;
     }
 }

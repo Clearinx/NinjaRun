@@ -3,6 +3,7 @@
 #include "point.h"
 #include "direction.h"
 #include "map.h"
+#include "logger.h"
 using namespace std;
 
 class Ninja
@@ -14,8 +15,12 @@ class Ninja
     bool _won;
     bool _breakerMode;
     bool _loop;
+    std::vector<Point> _previousPositions;
+    std::vector<Direction> _previousDirections;
+    Logger _logger;
     bool CheckForDestructibles(Map *map, vector<Point> *Obstacles);
     bool RayCast(Map *map, Direction throwPriority, vector<Point> *Obstacles);
+    bool HaveShurikens();
     void DestroyHolySymbol(Map *map, Point p);
     Point GetNewPoint(int i, Direction direction);
     void DestroyObstacles(Map *map, vector<Point> Obstacles);
@@ -26,11 +31,15 @@ class Ninja
     void ChangeDirection(Map *map);
     void BreakWall(Map *map);
     bool FoundObstaclesToDestroy(vector<Point> Obstacles);
+    void LogPosition();
+    void LogDirection();
+    void Win();
+    void PickUpShuriken(Map *map);
+    void LoopAlert(int i);
 
 public:
     Ninja(Point startLocation);
     void GoForIt(Map *map);
-    bool HaveShurikens();
 };
 
 #endif // NINJA_H

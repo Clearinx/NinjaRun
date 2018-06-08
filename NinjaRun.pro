@@ -21,7 +21,8 @@ SOURCES += \
     gamecontroller.cpp \
     map.cpp \
     point.cpp \
-    ninja.cpp
+    ninja.cpp \
+    logger.cpp
 
 HEADERS += \
     namegenerator.h \
@@ -30,4 +31,5 @@ HEADERS += \
     map.h \
     point.h \
     direction.h \
-    ninja.h
+    ninja.h \
+    logger.h
