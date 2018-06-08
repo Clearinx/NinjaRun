@@ -16,7 +16,11 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
         main.cpp \
-    namegenerator.cpp
+    namegenerator.cpp \
+    inputreader.cpp \
+    gamecontroller.cpp
 
 HEADERS += \
-    namegenerator.h
+    namegenerator.h \
+    inputreader.h \
+    gamecontroller.h

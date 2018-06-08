@@ -1,7 +1,10 @@
 #include "namegenerator.h"
+#include "inputreader.h"
+#include "gamecontroller.h"
 int main(int argc, char *argv[])
 {
-    NameGenerator n;
-    string s = n.GenerateName("Horvath, Tamas");
+
+    GameController gc;
+    gc.Start("input-all.list");
     return 0;
 }
