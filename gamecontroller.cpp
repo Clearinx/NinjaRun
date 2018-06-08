@@ -14,6 +14,7 @@ void GameController::Start(string mapNameList)
     for(int i = 0; i<ir.GetMapListVector().size(); i++)
     {
         string currentMapName = ir.GetMapListVector()[i];
-        ir.GetCurrentMap(currentMapName);
+        Map m(ir.GetCurrentMap(currentMapName));
+
     }
 }

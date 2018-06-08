@@ -2,6 +2,7 @@
 #define GAMECONTROLLER_H
 #include "inputreader.h"
 #include "namegenerator.h"
+#include "map.h"
 #include <string>
 #include <vector>
 using namespace std;
