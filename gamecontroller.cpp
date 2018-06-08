@@ -15,6 +15,7 @@ void GameController::Start(string mapNameList)
     {
         string currentMapName = ir.GetMapListVector()[i];
         Map m(ir.GetCurrentMap(currentMapName));
-
+        Ninja n(m.GetStart());
+        n.GoForIt(&m);
     }
 }

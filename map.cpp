@@ -43,3 +43,18 @@ char Map::GetElement(int x, int y)
 {
     return _map[x][y];
 }
+
+Point Map::GetPathwayEndLocation(Point actualPosition, char toFind)
+{
+    for(int i = 1; i< static_cast<int>(_map.size() - 1); i++)
+    {
+        for(int j = 1; j< static_cast<int>(_map[0].size() - 1); j++)
+        {
+            if(_map[i][j] == toFind && (i != actualPosition.getX() || j != actualPosition.getY()))
+            {
+                return Point(i,j);
+            }
+        }
+    }
+    throw "Pathway endpoint not found!";
+}

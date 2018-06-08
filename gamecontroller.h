@@ -3,6 +3,7 @@
 #include "inputreader.h"
 #include "namegenerator.h"
 #include "map.h"
+#include "ninja.h"
 #include <string>
 #include <vector>
 using namespace std;
