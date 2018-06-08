@@ -5,6 +5,7 @@ Ninja::Ninja(Point startLocation)
     _actualPosition = startLocation;
     _direction = SOUTH;
     _inverted = 1;
+    _directionMap = {{'S', 0}, {'E', 1}, {'N', 2}, {'W', 3}};
     _shurikens = 3;
     _won = false;
     _breakerMode = false;
@@ -101,6 +102,18 @@ void Ninja::Act(Map *map, char *c, Point *nextPosition)
         }
         break;
     }
+    case 'M':
+    {
+        MoveToNextPosition(nextPosition);
+        Mirror();
+        break;
+    }
+    case 'B':
+    {
+        MoveToNextPosition(nextPosition);
+        Sake();
+        break;
+    }
     case '*':
     {
         MoveToNextPosition(nextPosition);
@@ -109,7 +122,7 @@ void Ninja::Act(Map *map, char *c, Point *nextPosition)
     }
     default:
         MoveToNextPosition(nextPosition);
-        //ModifyPath(c);
+        ModifyPath(c);
         break;
     }
 }
@@ -163,6 +176,21 @@ void Ninja::MoveToNextPosition(Point *nextPosition)
     _actualPosition.setValues(nextPosition->getX(), nextPosition->getY());
     LogPosition();
     LogDirection();
+}
+
+void Ninja::ModifyPath(char *c)
+{
+    _direction = static_cast<Direction>(_directionMap[c[0]]);
+}
+
+void Ninja::Mirror()
+{
+    _inverted *= - 1;
+}
+
+void Ninja::Sake()
+{
+    _breakerMode = !_breakerMode;
 }
 
 void Ninja::BreakWall(Map *map)

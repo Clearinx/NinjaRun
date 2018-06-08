@@ -4,6 +4,7 @@
 #include "direction.h"
 #include "map.h"
 #include "logger.h"
+#include <map>
 using namespace std;
 
 class Ninja
@@ -15,8 +16,9 @@ class Ninja
     bool _won;
     bool _breakerMode;
     bool _loop;
-    std::vector<Point> _previousPositions;
-    std::vector<Direction> _previousDirections;
+    map<char, int> _directionMap;
+    vector<Point> _previousPositions;
+    vector<Direction> _previousDirections;
     Logger _logger;
     bool CheckForDestructibles(Map *map, vector<Point> *Obstacles);
     bool RayCast(Map *map, Direction throwPriority, vector<Point> *Obstacles);
@@ -36,6 +38,9 @@ class Ninja
     void Win();
     void PickUpShuriken(Map *map);
     void LoopAlert(int i);
+    void ModifyPath(char *c);
+    void Mirror();
+    void Sake();
     void SecretPathway(Map *map, char toFind);
 
 public:
