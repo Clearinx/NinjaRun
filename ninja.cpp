@@ -17,24 +17,142 @@ void Ninja::GoForIt(Map *map)
     Point nextPosition;
     while(!_won && !_loop)
     {
+        vector<Point> Obstacles;
         if(HaveShurikens())
         {
-            vector<Point> Obstacles;
             bool foundHolySymbol = CheckForDestructibles(map, &Obstacles);
             if(foundHolySymbol)
             {
                 DestroyHolySymbol(map, Obstacles[Obstacles.size() - 1]);
             }
-            else
+            else if(FoundObstaclesToDestroy(Obstacles))
             {
                 DestroyObstacles(map, Obstacles);
             }
         }
+        if(!FoundObstaclesToDestroy(Obstacles))
+        {
+            Point nextPosition;
+            CheckNextField(map, &c, &nextPosition);
+            Act(map, &c, &nextPosition);
+        }
+    }
+}
+
+void Ninja::CheckNextField(Map *map, char *c, Point *nextPosition)
+{
+    *nextPosition = GetNewPoint(1, _direction);
+    c[0] = map->GetElement(nextPosition->getX(), nextPosition->getY());
+}
+
+void Ninja::Act(Map *map, char *c, Point *nextPosition)
+{
+    switch (c[0]) {
+    case ' ':
+    {
+        MoveToNextPosition(nextPosition);
+        break;
+    }
+    case '#':
+    {
+        SetPriority(&_direction);
+        ChangeDirection(map);
+        break;
+    }
+    case 'X':
+    {
+        if(!_breakerMode)
+        {
+            SetPriority(&_direction);
+            ChangeDirection(map);
+        }
         else
         {
-            //CheckNextField(map, &c, &nextPosition);
-            //Act(map, &c, &nextPosition);
+            MoveToNextPosition(nextPosition);
+            BreakWall(map);
         }
+        break;
+    }
+    case '$':
+    {
+        MoveToNextPosition(nextPosition);
+        //Win();
+        break;
+    }
+    default:
+        MoveToNextPosition(nextPosition);
+        //ModifyPath(c);
+        break;
+    }
+}
+
+void Ninja::ChangeDirection(Map *map)
+{
+    bool found = false;
+    int dir = (static_cast<int>(_direction));
+    while(!found)
+    {
+        _direction = static_cast<Direction>(dir);
+        Point p = GetNewPoint(1, _direction);
+        if(map->GetElement(p.getX(), p.getY()) == '#')
+        {
+            dir +=_inverted;
+            if(dir == 4)
+            {
+                dir = 0;
+            }
+            else if(dir == -1)
+            {
+                dir = 4;
+            }
+        }
+        else
+        {
+            if(map->GetElement(p.getX(), p.getY()) != 'X' || (map->GetElement(p.getX(), p.getY()) == 'X' && _breakerMode))
+            {
+                found = true;
+            }
+            else
+            {
+                dir +=_inverted;
+                if(dir == 4)
+                {
+                    dir = 0;
+                }
+                else if(dir == -1)
+                {
+                    dir = 4;
+                }
+            }
+        }
+
+    }
+}
+
+void Ninja::MoveToNextPosition(Point *nextPosition)
+{
+    _actualPosition.setValues(nextPosition->getX(), nextPosition->getY());
+}
+
+void Ninja::BreakWall(Map *map)
+{
+    map->setMap(_actualPosition.getX(), _actualPosition.getY(), ' ');
+}
+
+bool Ninja::FoundObstaclesToDestroy(vector<Point> Obstacles)
+{
+    return Obstacles.size() != 0;
+}
+
+void Ninja::SetPriority(Direction *direction)
+{
+    if(_inverted == 1)
+    {
+        *direction = SOUTH;
+    }
+    else
+    {
+        *direction = WEST;
     }
 }
 
@@ -46,14 +164,7 @@ bool Ninja::HaveShurikens()
 bool Ninja::CheckForDestructibles(Map *map, vector<Point> *Obstacles)
 {
     Direction throwPriority;
-    if(_inverted == 1)
-    {
-        throwPriority = SOUTH;
-    }
-    else
-    {
-        throwPriority = WEST;
-    }
+    SetPriority(&throwPriority);
     bool foundHolySymbol = false;
     int i = 0;
     while(i < 4 && !foundHolySymbol)

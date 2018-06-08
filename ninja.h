@@ -19,6 +19,13 @@ class Ninja
     void DestroyHolySymbol(Map *map, Point p);
     Point GetNewPoint(int i, Direction direction);
     void DestroyObstacles(Map *map, vector<Point> Obstacles);
+    void CheckNextField(Map *map, char *c, Point *nextPosition);
+    void Act(Map *map, char *c, Point *nextPosition);
+    void MoveToNextPosition(Point *nextPosition);
+    void SetPriority(Direction *direction);
+    void ChangeDirection(Map *map);
+    void BreakWall(Map *map);
+    bool FoundObstaclesToDestroy(vector<Point> Obstacles);
 
 public:
     Ninja(Point startLocation);
