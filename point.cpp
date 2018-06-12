@@ -16,6 +16,15 @@ int Point::getY()
     return _y;
 }
 
+bool Point::operator==(const Point &other) const
+{
+    if(other._x == this->_x && other._y == this->_y)
+    {
+        return true;
+    }
+    return false;
+}
+
 Point::Point()
 {
 }

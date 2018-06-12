@@ -10,9 +10,11 @@ void GameController::Start(string mapNameList)
     InputReader ir;
     ir.GetMapList(mapNameList);
     NameGenerator n;
+    Logger log;
     string ninjaName = n.GenerateName("Horvath, Tamas");
-    for(int i = 0; i<ir.GetMapListVector().size(); i++)
+    for(int i = 0; i < static_cast<int>(ir.GetMapListVector().size()); i++)
     {
+        log.LogName(ninjaName);
         string currentMapName = ir.GetMapListVector()[i];
         Map m(ir.GetCurrentMap(currentMapName));
         Ninja n(m.GetStart());

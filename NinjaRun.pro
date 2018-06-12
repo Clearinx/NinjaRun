@@ -22,7 +22,8 @@ SOURCES += \
     map.cpp \
     point.cpp \
     ninja.cpp \
-    logger.cpp
+    logger.cpp \
+    positioninfo.cpp
 
 HEADERS += \
     namegenerator.h \
@@ -32,4 +33,5 @@ HEADERS += \
     point.h \
     direction.h \
     ninja.h \
-    logger.h
+    logger.h \
+    positioninfo.h

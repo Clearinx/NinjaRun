@@ -4,8 +4,8 @@
 #include "direction.h"
 #include "map.h"
 #include "logger.h"
+#include "positioninfo.h"
 #include <map>
-using namespace std;
 
 class Ninja
 {
@@ -17,7 +17,7 @@ class Ninja
     bool _breakerMode;
     bool _loop;
     map<char, int> _directionMap;
-    vector<Point> _previousPositions;
+    vector<PositionInfo> _previousPositions;
     vector<Direction> _previousDirections;
     Logger _logger;
     bool CheckForDestructibles(Map *map, vector<Point> *Obstacles);

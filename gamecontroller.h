@@ -6,7 +6,6 @@
 #include "ninja.h"
 #include <string>
 #include <vector>
-using namespace std;
 
 class GameController
 {

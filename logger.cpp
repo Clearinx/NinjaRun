@@ -23,6 +23,11 @@ void Logger::LogLoop()
     cout << "LOOP" << endl;
 }
 
+void Logger::LogName(string name)
+{
+    cout << name << endl;
+}
+
 Logger::~Logger()
 {
 

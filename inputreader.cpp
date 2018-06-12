@@ -28,7 +28,7 @@ vector<string> InputReader::GetMapListVector()
     return this->_maplistVector;
 }
 
-vector<std::vector<char> > InputReader::GetCurrentMap(string mapname)
+vector<vector<char> > InputReader::GetCurrentMap(string mapname)
 {
     vector<vector<char>> map;
     ifstream file(mapname);

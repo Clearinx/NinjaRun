@@ -2,7 +2,6 @@
 #define MAP_H
 #include<vector>
 #include "point.h"
-using namespace std;
 
 class Map
 {

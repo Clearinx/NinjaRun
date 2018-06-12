@@ -51,18 +51,18 @@ void Ninja::GoForIt(Map *map)
 void Ninja::CheckNextField(Map *map, char *c, Point *nextPosition)
 {
     *nextPosition = GetNewPoint(1, _direction);
-    c[0] = map->GetElement(nextPosition->getX(), nextPosition->getY());
+    *c = map->GetElement(nextPosition->getX(), nextPosition->getY());
 }
 
 void Ninja::Act(Map *map, char *c, Point *nextPosition)
 {
-    if(c[0] >= 'F' && c[0] <= 'L')
+    if(*c >= 'F' && *c <= 'L')
     {
         MoveToNextPosition(nextPosition);
-        SecretPathway(map, c[0]);
+        SecretPathway(map, *c);
         return;
     }
-    switch (c[0]) {
+    switch (*c) {
     case ' ':
     {
         MoveToNextPosition(nextPosition);
@@ -180,7 +180,7 @@ void Ninja::MoveToNextPosition(Point *nextPosition)
 
 void Ninja::ModifyPath(char *c)
 {
-    _direction = static_cast<Direction>(_directionMap[c[0]]);
+    _direction = static_cast<Direction>(_directionMap[*c]);
 }
 
 void Ninja::Mirror()
@@ -267,7 +267,7 @@ bool Ninja::RayCast(Map *map, Direction throwPriority, vector<Point> *Obstacles)
                 Obstacles->push_back(newPosition);
             }
             i++;
-        }while(c != '#' && !foundHolySymbol);
+        }while(c != '#' && c != 'M' && !foundHolySymbol);
         if(foundHolySymbol)
         {
             return true;
@@ -315,7 +315,7 @@ Point Ninja::GetNewPoint(int i, Direction direction)
 void Ninja::DestroyObstacles(Map *map, vector<Point> Obstacles)
 {
     int i = 0;
-    while(i < Obstacles.size() && _shurikens > 0)
+    while(i < static_cast<int>(Obstacles.size()) && _shurikens > 0)
     {
         map->setMap(Obstacles[i].getX(), Obstacles[i].getY(), '*');
         _shurikens--;
@@ -325,14 +325,16 @@ void Ninja::DestroyObstacles(Map *map, vector<Point> Obstacles)
 
 void Ninja::LogPosition()
 {
+    PositionInfo p;
     for(int i = static_cast<int>(_previousPositions.size() - 1); i >= 0 ; i--)
     {
-        if(_previousPositions[i].getX() == _actualPosition.getX() && _previousPositions[i].getY() == _actualPosition.getY())
+        p = PositionInfo(_actualPosition, _inverted, _breakerMode);
+        if(_previousPositions[i] == p)
         {
             LoopAlert(i);
         }
     }
-    _previousPositions.push_back(_actualPosition);
+    _previousPositions.push_back(p);
 }
 
 void Ninja::LogDirection()
@@ -356,7 +358,7 @@ void Ninja::LoopAlert(int i)
     int count = static_cast<int>(_previousPositions.size() - 1) - i;
     int j = count;
     i--;
-    while(i >= 0 && j >= 0 && (_previousPositions[i].getX() == _previousPositions[count + i + 1].getX()) && (_previousPositions[i].getY() == _previousPositions[count + i + 1].getY()))
+    while(i >= 0 && j >= 0 && (_previousPositions[i] == _previousPositions[count + i + 1]))
     {
         j--;
         i--;

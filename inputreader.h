@@ -3,7 +3,6 @@
 #include <fstream>
 #include <string>
 #include <vector>
-
 using namespace std;
 
 class InputReader
@@ -13,7 +12,7 @@ public:
     InputReader();
     void GetMapList(string s);
     vector<string>GetMapListVector();
-    static std::vector<std::vector<char>> GetCurrentMap(string mapname);
+    static vector<vector<char>> GetCurrentMap(string mapname);
 };
 
 #endif // INPUTREADER_H
